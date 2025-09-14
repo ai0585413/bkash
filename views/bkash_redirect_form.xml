@@ -1,0 +1,15 @@
+<odoo>
+    <record id="bkash_redirect_form" model="ir.ui.view">
+        <field name="name">bKash Redirect Form</field>
+        <field name="type">qweb</field>
+        <field name="arch" type="xml">
+            <t t-name="bkash.redirect_form">
+                <form id="bkash_redirect_form" method="post" t-att-action="redirect_url">
+                    <!-- CSRF token required for POST -->
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" name="param1" t-att-value="param1"/>
+                </form>
+            </t>
+        </field>
+    </record>
+</odoo>
