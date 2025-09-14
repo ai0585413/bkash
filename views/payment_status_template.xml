@@ -1,0 +1,76 @@
+<odoo>
+    <template id="payment_status_template" name="Payment Status">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+
+                        <!-- Transaction found -->
+                        <t t-if="transaction">
+
+                            <t t-if="transaction.state == 'done'">
+                                <div class="alert alert-success text-center shadow-lg p-4 rounded">
+                                    <h2>✅ Payment Successful!</h2>
+                                    <p>
+                                        Transaction <strong><t t-esc="transaction.reference"/></strong> 
+                                        for <strong><t t-esc="transaction.amount"/></strong> 
+                                        <t t-esc="transaction.currency_id.symbol"/> completed successfully.
+                                    </p>
+                                </div>
+                            </t>
+
+                            <t t-elif="transaction.state == 'pending'">
+                                <div class="alert alert-info text-center shadow-lg p-4 rounded">
+                                    <h2>⏳ Payment Pending</h2>
+                                    <p>Your transaction <strong><t t-esc="transaction.reference"/></strong> is being processed.</p>
+                                </div>
+                                <meta http-equiv="refresh" content="5"/>
+                            </t>
+
+                            <t t-elif="transaction.state == 'cancel'">
+                                <div class="alert alert-warning text-center shadow-lg p-4 rounded">
+                                    <h2>⚠️ Payment Canceled</h2>
+                                    <p>Transaction <strong><t t-esc="transaction.reference"/></strong> was canceled.</p>
+                                </div>
+                            </t>
+
+                            <t t-elif="transaction.state == 'error'">
+                                <div class="alert alert-danger text-center shadow-lg p-4 rounded">
+                                    <h2>❌ Payment Failed</h2>
+                                    <p>
+                                        Transaction <strong><t t-esc="transaction.reference"/></strong> failed.
+                                        <br/>
+                                        Error details: <t t-esc="transaction.state_message or 'Unknown error'"/>
+                                    </p>
+                                </div>
+                            </t>
+
+                        </t>
+
+                        <t t-else="">
+                            <div class="alert alert-secondary text-center shadow-lg p-4 rounded">
+                                <h2>❓ No Transaction Found</h2>
+                                <p>No payment record was found for this request.</p>
+                            </div>
+                        </t>
+
+                        <div class="text-center mt-4">
+                            <a href="/" class="btn btn-primary">Back to Home</a>
+                        </div>
+
+                        <!-- Sandbox callback URLs for testing -->
+                        <div class="alert alert-light mt-4 p-3 rounded">
+                            <h5>Sandbox Callback URLs:</h5>
+                            <ul>
+                                <li>Success: <t t-esc="'http://103.145.138.193:8069/payment/bkash/return?status=success'"/></li>
+                                <li>Failure: <t t-esc="'http://103.145.138.193:8069/payment/bkash/return?status=failure'"/></li>
+                                <li>Cancel: <t t-esc="'http://103.145.138.193:8069/payment/bkash/return?status=cancel'"/></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
